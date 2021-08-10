@@ -14,7 +14,7 @@ int main(){
 
     if (listNames == NULL){ //Verifico se tem memória
         printf("Memoria insuficiente!");
-        return -1;
+        exit (1);
     }
 
     int option;
@@ -30,27 +30,23 @@ int main(){
 
         switch(option){
             case 1:
-                system("cls || clear");
-                printf("VAI ADICIONAR NOME AQUI");
+                addName();
                 break;
             case 2:
-                system("cls || clear");
-                printf("VAI REMOVER NOME AQUI");
+                removeName();
                 break;
             case 3:
-                system("cls || clear");
-                printf("VAI LISTAR OS NOMES AQUI");
+                listName();
                 break;
             case 4:
-                system("cls || clear");
-                exit(0);
                 free(listNames); //Para não haver vazamento de memória
+                exit(0);
                 break;
             default:
-                system("cls || clear");
-                printf("OPCAO INVALIDA! TENTE NOVAMENTE!");
+                printf("Opcao invalida, tente novamente!");
+                break;
         }
-    } while (option);
+    } while (option != 4);
 }
 
 void addName(){
