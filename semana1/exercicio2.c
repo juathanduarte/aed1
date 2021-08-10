@@ -5,8 +5,8 @@ void addName(void);
 void removeName(void);
 void listName(void);
 
-char *listNames = NULL; //Inicializo o ponteiro com NULL, boa prática
-
+char *listNames;
+int listSize = 0;
 
 int main(){
 
@@ -19,7 +19,7 @@ int main(){
 
     int option;
 
-    do{ //Opções de menu
+    do { //Opções de menu
         printf("Programa que armazena nomes\n");
         printf("\t1) Adicionar nome\n");
         printf("\t2) Remover nome\n");
@@ -46,11 +46,29 @@ int main(){
                 printf("Opcao invalida, tente novamente!");
                 break;
         }
-    } while (option != 4);
+    } while ((option >= 1) || (option <= 4));
 }
 
 void addName(){
 
+    int i;
+
+    fgetc(stdin);
+    printf("Digite o nome: ");
+
+    if (listSize != 0){
+        listNames[listSize] = ', ';
+        listSize++;
+        listNames = realloc(listNames, listSize * sizeof(char) + 2);
+        listNames[listSize] = ' ';
+        listSize++;
+        listNames = realloc(listNames, listSize * sizeof(char) + 2);
+    }
+    for (i = listSize; ((listNames[i] = getchar()) != '\n') && listNames[i] != '\0'; i++){
+        listSize++;
+        listNames = realloc(listNames, listSize * sizeof(char) + 2);
+    }
+    listNames[listSize] = '\0';
 }
 
 void removeName(){
@@ -58,5 +76,9 @@ void removeName(){
 }
 
 void listName(){
-
+    if (listSize == 0){
+        printf ("A lista esta vazia!");
+    } else {
+        printf("%s\n", listNames);
+    }
 }
