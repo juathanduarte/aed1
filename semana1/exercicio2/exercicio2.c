@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-void addName(void);
-void removeName(void);
-void listName(void);
+void addName();
+void removeName();
+void listName();
 
 char *listNames;
 int listSize = 0;
@@ -57,7 +58,7 @@ void addName(){
     printf("Digite o nome: ");
 
     if (listSize != 0){
-        listNames[listSize] = ', ';
+        listNames[listSize] = ',';
         listSize++;
         listNames = realloc(listNames, listSize * sizeof(char) + 2);
         listNames[listSize] = ' ';
