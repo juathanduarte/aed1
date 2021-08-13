@@ -73,7 +73,24 @@ void addName(){
 }
 
 void removeName(){
+    getchar();
+    char *removedName = (char*)malloc(sizeof(char) + 2);
+    int removedNameSize = 0;
+    int i;
 
+    if(!removedName){
+        printf("Memoria insuficiente!");
+        exit (1);
+    }
+
+    printf("Digite o nome a ser removido: ");
+
+    for(i = 0; ((removedName[i] = getchar()) != '\n') && removedName[i] != '\0'; i++){
+        removedNameSize++;
+        removedName = realloc(removedName, removedNameSize * sizeof(char) + 2);
+    }
+
+    removedName[removedNameSize] = '\0';
 }
 
 void listName(){
