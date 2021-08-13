@@ -58,13 +58,15 @@ void addName(){
     printf("Digite o nome: ");
 
     if (listSize != 0){
-        listNames[listSize] = ',';
-        listSize++;
         listNames = realloc(listNames, listSize * sizeof(char) + 2);
-        listNames[listSize] = ' ';
+        strcat(listNames, ", ");
+        //listNames[listSize] = ',';
+        //listSize++;
+        //listNames = realloc(listNames, listSize * sizeof(char) + 2);
+        //listNames[listSize] = ' ';
         listSize++;
-        listNames = realloc(listNames, listSize * sizeof(char) + 2);
     }
+    
     for (i = listSize; ((listNames[i] = getchar()) != '\n') && listNames[i] != '\0'; i++){
         listSize++;
         listNames = realloc(listNames, listSize * sizeof(char) + 2);
@@ -73,29 +75,29 @@ void addName(){
 }
 
 void removeName(){
-    getchar();
-    char *removedName = (char*)malloc(sizeof(char) + 2);
-    int removedNameSize = 0;
-    int i;
+    // getchar();
+    // char *removedName = (char*)malloc(sizeof(char) + 2);
+    // int removedNameSize = 0;
+    // int i;
 
-    if(!removedName){
-        printf("Memoria insuficiente!");
-        exit (1);
-    }
+    // if(!removedName){
+    //     printf("Memoria insuficiente!");
+    //     exit (1);
+    // }
 
-    printf("Digite o nome a ser removido: ");
+    // printf("Digite o nome a ser removido: ");
 
-    for(i = 0; ((removedName[i] = getchar()) != '\n') && removedName[i] != '\0'; i++){
-        removedNameSize++;
-        removedName = realloc(removedName, removedNameSize * sizeof(char) + 2);
-    }
+    // for(i = 0; ((removedName[i] = getchar()) != '\n') && removedName[i] != '\0'; i++){
+    //     removedNameSize++;
+    //     removedName = realloc(removedName, removedNameSize * sizeof(char) + 2);
+    // }
 
-    removedName[removedNameSize] = '\0';
+    // removedName[removedNameSize] = '\0';
 }
 
 void listName(){
     if (listSize == 0){
-        printf ("A lista esta vazia!");
+        printf ("A lista esta vazia!\n");
     } else {
         printf("%s\n", listNames);
     }
