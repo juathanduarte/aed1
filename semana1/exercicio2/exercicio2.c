@@ -51,27 +51,22 @@ int main(){
 }
 
 void addName(){
-
     int i;
 
     fgetc(stdin);
     printf("Digite o nome: ");
 
-    if (listSize != 0){
+    if (listSize != 0){ //Separo os nomes por ,
         listNames = realloc(listNames, listSize * sizeof(char) + 2);
         strcat(listNames, ", ");
-        //listNames[listSize] = ',';
-        //listSize++;
-        //listNames = realloc(listNames, listSize * sizeof(char) + 2);
-        //listNames[listSize] = ' ';
-        listSize++;
+        listSize += 2;
     }
     
-    for (i = listSize; ((listNames[i] = getchar()) != '\n') && listNames[i] != '\0'; i++){
+    for (i = listSize; ((listNames[i] = getchar()) != '\n') && listNames[i] != '\0'; i++){ // Adiciono nome da string
         listSize++;
         listNames = realloc(listNames, listSize * sizeof(char) + 2);
     }
-    listNames[listSize] = '\0';
+    listNames[listSize] = '\0'; //Termino a string
 }
 
 void removeName(){
