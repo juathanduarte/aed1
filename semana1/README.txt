@@ -29,7 +29,7 @@ Faça uma agenda capaz de incluir, apagar, buscar e listar quantas pessoas o usu
 
 # EXECUTANDO OS PROGRAMAS (compilação manual)
 Para executar os arquivos, você precisa dos arquivos em seu PC.
-Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/dudaac1/aed1-exercicios.git).
+Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/juathanduarte/aed1.git).
 
 Linux: Instale a extensão C/C++ no VSCODE e aperte F5 para compilar o arquivo.
 Windows: Instale a extensão C/C++ e Compile Run no VSCODE, configure o MinGW (GCC) e aperte F5 para compilar o arquivo.
