@@ -18,13 +18,13 @@ Faça uma agenda capaz de incluir, apagar, buscar e listar quantas pessoas o usu
 
 # DIRETÓRIOS
     |-- exerc1
-    |   ∟ exerc1.c
+    |   ∟ exercicio1.c
     |
     |-- exerc2
-    |   ∟ exerc2.c
+    |   ∟ exercicio2.c
     |
     |-- exerc3
-    |   ∟ exerc3.c 
+    |   ∟ exercicio3.c 
     |
 
 # EXECUTANDO OS PROGRAMAS (compilação manual)
