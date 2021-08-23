@@ -86,10 +86,6 @@ void *addPerson(void *pBuffer){
     scanf("%d", (int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * totalPeople));
     getchar();
 
-    printf("\nNome: %s\n", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * totalPeople);
-    printf("\nIdade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * totalPeople));
-    printf("\nNumero: %d\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * totalPeople));
-
     *(int *)pBuffer = totalPeople + 1; //armazena o valor de contador ao N° de nomes
 
     return pBuffer;  // Retorna o valor
