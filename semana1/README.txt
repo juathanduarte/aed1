@@ -22,9 +22,11 @@ Faça uma agenda capaz de incluir, apagar, buscar e listar quantas pessoas o usu
     |
     |-- exerc2
     |   ∟ exercicio2.c
+    |   ∟ teste.txt
     |
     |-- exerc3
     |   ∟ exercicio3.c 
+    |   ∟ teste.txt
     |
 
 # EXECUTANDO OS PROGRAMAS (compilação manual)
