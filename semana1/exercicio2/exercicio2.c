@@ -31,6 +31,7 @@ int main() {
       printf("\t4) Sair\n");
       printf("\t- Opcao: ");
       scanf("%d", &option);
+      getchar();
 
     switch (option) {
         case 1:
@@ -56,7 +57,7 @@ int main() {
 void addName() {
     int i;
 
-    printf("Digite o nome: ");
+    printf("\nDigite o nome: ");
 
     if (listSize != 0) { //Separo os nomes por espaço
           listNames = realloc(listNames, listSize * sizeof(char) + 1);
@@ -72,7 +73,7 @@ void addName() {
 }
 
 void removeName() {
-      printf("Digite o nome para remover: ");
+      printf("\nDigite o nome para remover: ");
       scanf("%s", removedName);
 
       auxRemovedName = strstr(listNames, removedName); //Comparo a substring com a string principal para achar o endereço de memória inicial do nome a ser removido
@@ -86,6 +87,8 @@ void removeName() {
 
       listSize -= strlen(removedName) + 1; //Reduzo no tamanho da lista o nome que retirei
       listNames = (char *)realloc(listNames, (listSize) * sizeof(char)); //Faço o reallooc
+      
+      free(auxRemovedName);
 }
 
 void listName() {
