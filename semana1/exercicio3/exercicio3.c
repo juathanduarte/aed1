@@ -41,8 +41,8 @@ int main(){
             pBuffer = addPerson(pBuffer);
             break;
         case 2:
-           pBuffer = removed(pBuffer);
-           break;
+            pBuffer = removed(pBuffer);
+            break;
         case 3:
             list(pBuffer);
             break;
@@ -65,18 +65,18 @@ void *addPerson(void *pBuffer){
 
     getchar();
 
-    totalPeople = *(int *)pBuffer; //Pega a quantidade de nomes adicionados
+    totalPeople = *(int *)pBuffer;
 
-    pBuffer = realloc(pBuffer, NNAME + (NAME + AGE + NUMBER) * (totalPeople + 1)); //Faz uma alocação par N° de Nomes + Nome + Idade + telefone
+    pBuffer = realloc(pBuffer, NNAME + (NAME + AGE + NUMBER) * (totalPeople + 1));
      
-    if (!pBuffer){ //Executa um teste memória para ver se foi possível alocar.
+    if (!pBuffer){
         printf("Memoria insuficiente");
         exit (1);
     }
  
     printf("Digite o nome:\n ");
     scanf("%s", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * totalPeople);
-    getchar(); //Limpa a sujeira de teclado
+    getchar();
 
     printf("\nDigite a idade:\n ");
     scanf("%d", (int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * totalPeople));
@@ -86,9 +86,9 @@ void *addPerson(void *pBuffer){
     scanf("%d", (int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * totalPeople));
     getchar();
 
-    *(int *)pBuffer = totalPeople + 1; //armazena o valor de contador ao N° de nomes
+    *(int *)pBuffer = totalPeople + 1;
 
-    return pBuffer;  // Retorna o valor
+    return pBuffer;
 }
 
 void list(void *pBuffer){
@@ -101,9 +101,10 @@ void list(void *pBuffer){
             printf("Agenda esta vazia, insira algo!\n\n");
         } else {
             for(i = 0 ; i < totalPeople ; i++){
+                printf("Nname [%d]\n", i + 1);
                 printf("Nome: %s\n", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i);
-                printf("\nIdade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * i));
-                printf("\nNumero: %d\n\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * i));
+                printf("Idade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * i));
+                printf("Numero: %d\n\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * i));
             }
         }
 }
@@ -132,7 +133,7 @@ void search(void *pBuffer){
 }
 
 void *removed(void *pBuffer){
-    int totalPeople, i;
+    int totalPeople, j, i;
     char aux_nome[10];
 
     totalPeople = *(int *)pBuffer;
@@ -146,9 +147,11 @@ void *removed(void *pBuffer){
 
         for(i = 0; i < totalPeople; i++){
             if(strcmp((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * i), aux_nome) == 0) {
-                strcpy((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * i), (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * (totalPeople - 1));
-                *(int *)(pBuffer + NNAME + NAME + ((NAME + AGE + NUMBER) * i)) = *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * (totalPeople - 1));
-                *(int *)(pBuffer + NNAME + NAME + AGE + ((NAME + AGE + NUMBER * i))) = *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * (totalPeople - 1));
+                for(j = i; j < totalPeople; j++){
+                    strcpy((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * j), (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * (j + 1));
+                    *(int *)(pBuffer + NNAME + NAME + ((NAME + AGE + NUMBER) * j)) = *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * (j + 1));
+                    *(int *)(pBuffer + NNAME + NAME + AGE + ((NAME + AGE + NUMBER * j))) = *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * (j + 1));
+                }
                 *(int *)pBuffer = totalPeople - 1;
                 pBuffer = realloc(pBuffer, NNAME + (NAME + AGE + NUMBER) * (totalPeople - 1));
                 return pBuffer;
