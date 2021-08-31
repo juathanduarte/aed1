@@ -7,6 +7,8 @@
 #define AUX_LIST (sizeof(int))
 #define AUX_SEARCH (sizeof(char) * 10)
 #define AUX_COUNTER (sizeof(int))
+#define AUX_COUNTER1 (sizeof(int))
+#define AUX_REMOVED (sizeof(char) * 10)
 
 #define NNAME (sizeof(int))
 #define AGE (sizeof(int))
@@ -30,7 +32,7 @@ int main(){
 
     void *pBuffer = NULL;
 
-    pBuffer = malloc(OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER);
+    pBuffer = malloc(OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED + AUX_COUNTER1);
 
     if (!pBuffer){
         printf("Erro ao alocar memoria.\n");
@@ -82,7 +84,7 @@ int main(){
 
 void *addPerson(void *pBuffer){
     if (*(int *)(pBuffer + OPTION) == 10) {
-        printf("Lista cheia!");
+        printf("Lista cheia!\n\n");
     } else {
         printf("\n---ADICIONAR NOME---\n\n");
         printf("Digite o nome:\n ");
@@ -136,27 +138,21 @@ void search(void *pBuffer){
 }
 
 void *removed(void *pBuffer){
-    int totalPeople, j, i;
-    char aux_nome[10];
-
-    totalPeople = *(int *)pBuffer;
-
-    if (totalPeople == 0){
+    if (*(int *)(pBuffer + OPTION) == 0){
         printf("Agenda esta vazia, insira algo!\n\n");
     } else {
         printf("Digite o nome que queira remover: ");
-        scanf("%s", aux_nome);
+        scanf("%s", (char *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER)); //Aux removed char[10]
         getchar();
 
-        for(i = 0; i < totalPeople; i++){
-            if(strcmp((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * i), aux_nome) == 0) {
-                for(j = i; j < totalPeople; j++){
-                    strcpy((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * j), (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * (j + 1));
-                    *(int *)(pBuffer + NNAME + NAME + ((NAME + AGE + NUMBER) * j)) = *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * (j + 1));
-                    *(int *)(pBuffer + NNAME + NAME + AGE + ((NAME + AGE + NUMBER * j))) = *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * (j + 1));
+        for(*(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) = 0; *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) < *(int *)(pBuffer + OPTION); *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) += 1){ // Aux Counter + 1
+            if(strcmp((char *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER), (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH)) -> name ) == 0) { // Se o nome digitado estiver na lista entra aqui
+                 for(*(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED) = *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH); *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED) < *(int *)(pBuffer + OPTION); *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED) += 1){
+                    strcpy((pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> name, (pessoas + 1 + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> name);
+                    (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> age = (pessoas + 1 + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> age;
+                    (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> telephone = (pessoas + 1 + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER + AUX_REMOVED)) -> telephone;
                 }
-                *(int *)pBuffer = totalPeople - 1;
-                pBuffer = realloc(pBuffer, NNAME + (NAME + AGE + NUMBER) * (totalPeople - 1));
+                *(int *)(pBuffer + OPTION) = *(int *)(pBuffer + OPTION) - 1;
                 return pBuffer;
             }
         }
