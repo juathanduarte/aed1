@@ -4,7 +4,9 @@
 
 #define OPTION (sizeof(int))
 #define TOTALPEOPLE (sizeof(int))
-#define AUX_SEARCH (sizeof(int) * 10)
+#define AUX_LIST (sizeof(int))
+#define AUX_SEARCH (sizeof(char) * 10)
+#define AUX_COUNTER (sizeof(int))
 
 #define NNAME (sizeof(int))
 #define AGE (sizeof(int))
@@ -28,7 +30,7 @@ int main(){
 
     void *pBuffer = NULL;
 
-    pBuffer = malloc(OPTION + TOTALPEOPLE + AUX_SEARCH);
+    pBuffer = malloc(OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH + AUX_COUNTER);
 
     if (!pBuffer){
         printf("Erro ao alocar memoria.\n");
@@ -82,6 +84,7 @@ void *addPerson(void *pBuffer){
     if (*(int *)(pBuffer + OPTION) == 10) {
         printf("Lista cheia!");
     } else {
+        printf("\n---ADICIONAR NOME---\n\n");
         printf("Digite o nome:\n ");
         scanf("%s", (pessoas + *(int *)(pBuffer + OPTION)) -> name);
         getchar();
@@ -101,34 +104,30 @@ void *addPerson(void *pBuffer){
 }
 
 void list(void *pBuffer){
-        if (*(int *)(pBuffer + OPTION) == 0) {
-            printf("Agenda esta vazia, insira algo!\n\n");
-        } else {
-            for (*(int *)(pBuffer + OPTION + TOTALPEOPLE) = 0 ; *(int *)(pBuffer + OPTION + TOTALPEOPLE) < ((*(int*)(pBuffer) + OPTION)) ; *(int *)(pBuffer + OPTION + TOTALPEOPLE) += 1){
-                printf("Nname [%d]\n", *(int *)(pBuffer + OPTION + TOTALPEOPLE) + 1);
-                printf("Nome: %s\n", (pessoas + (*(int *)pBuffer + OPTION)) -> name);
-                printf("Idade: %d\n", (pessoas + (*(int *)pBuffer + OPTION)) -> age);
-                printf("Numero: %d\n\n", (pessoas + (*(int *)pBuffer + OPTION)) -> telephone);
-            }
+    if (*(int *)(pBuffer + OPTION) == 0) {
+        printf("Agenda esta vazia, insira algo!\n\n");
+    } else {
+        printf("\n---LISTA DE NOMES---\n\n");
+        for (*(int *)(pBuffer + OPTION + TOTALPEOPLE) = 0 ; *(int *)(pBuffer + OPTION + TOTALPEOPLE) < *(int*)(pBuffer + OPTION) ; *(int *)(pBuffer + OPTION + TOTALPEOPLE) += 1){
+            printf("Nname [%d]\n", *(int *)(pBuffer + OPTION + TOTALPEOPLE) + 1);
+            printf("Nome: %s\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE)) -> name);
+            printf("Idade: %d\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE)) -> age);
+            printf("Numero: %d\n\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE)) -> telephone);
         }
+    }
 }
 
-void search(void *pBuffer){
-    int totalPeople;
-    int i;
-    char aux_nome[10];
-    
+void search(void *pBuffer){    
     printf("Digite o nome que queira buscar: \n");
-    scanf("%s", aux_nome);
+    scanf("%s", (char *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST));
     getchar();
 
-    totalPeople = *(int *)pBuffer;
-
-    for(i = 0; i < totalPeople; i++){
-        if(strcmp((char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i ,aux_nome) == 0){
-            printf("\nName: %s\n", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i);
-            printf("\nIdade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * i));
-            printf("\nNumero: %d\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * i));
+    for(*(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) = 0; *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) <  *(int*)(pBuffer + OPTION); *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH) += 1){
+        if(strcmp((char *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST), (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH)) -> name ) == 0){
+            printf("\n---NOME BUSCADO---\n\n");
+            printf("Nome: %s\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH)) -> name);
+            printf("Idade: %d\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH)) -> age);
+            printf("Numero: %d\n\n", (pessoas + *(int *)(pBuffer + OPTION + TOTALPEOPLE + AUX_LIST + AUX_SEARCH)) -> telephone);
             return;
         }
     }
