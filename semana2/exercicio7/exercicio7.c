@@ -83,8 +83,9 @@ int main(){
 }
 
 void *addPerson(void *pBuffer){
-    if (*(int *)(pBuffer + OPTION) == 10) {
+    if (*(int *)(pBuffer + OPTION) >= 10) {
         printf("Lista cheia!\n\n");
+        return pBuffer;
     } else {
         printf("\n---ADICIONAR NOME---\n\n");
         printf("Digite o nome:\n ");
