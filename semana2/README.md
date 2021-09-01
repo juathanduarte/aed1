@@ -30,6 +30,8 @@ Pessoa pessoas[10].
 Para executar os arquivos, você precisa dos arquivos em seu PC.
 Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/juathanduarte/aed1.git).
 
+-Link do vídeo: https://drive.google.com/file/d/1TjTyrX13JBiEgB3WS-yQI4VWYyh47ne0/view?usp=sharing
+
 Linux: Instale a extensão C/C++ no VSCODE e aperte F6 para compilar o arquivo.
 Windows: Instale a extensão C/C++ e Compile Run no VSCODE, configure o MinGW (GCC) e aperte F6 para compilar o arquivo.
 
