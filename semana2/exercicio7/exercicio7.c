@@ -10,7 +10,6 @@
 #define AUX_COUNTER1 (sizeof(int))
 #define AUX_REMOVED (sizeof(char) * 10)
 
-#define NNAME (sizeof(int))
 #define AGE (sizeof(int))
 #define NUMBER (sizeof(int))
 #define NAME (sizeof(char) * 10)
