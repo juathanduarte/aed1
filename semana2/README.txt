@@ -32,3 +32,7 @@ Faça download de cada arquivo .c separadamente ou clone o repositório (git clo
 
 Linux: Instale a extensão C/C++ no VSCODE e aperte F6 para compilar o arquivo.
 Windows: Instale a extensão C/C++ e Compile Run no VSCODE, configure o MinGW (GCC) e aperte F6 para compilar o arquivo.
+
+___________________________________
+
+Juathan C. Duarte (juathan.cduarte@inf.ufpel.edu.br).
