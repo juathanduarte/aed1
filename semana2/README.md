@@ -26,6 +26,8 @@ Pessoa pessoas[10].
     2. Não pode usar struct dentro do pBuffer
 3. Como sempre, entregar o código e o vídeo explicando o código, mostrando casos de teste e o resultado do DrMemory
 
+- Link do vídeo: https://drive.google.com/file/d/1TjTyrX13JBiEgB3WS-yQI4VWYyh47ne0/view?usp=sharing
+
 # EXECUTANDO OS PROGRAMAS (compilação manual)
 Para executar os arquivos, você precisa dos arquivos em seu PC.
 Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/juathanduarte/aed1.git).
