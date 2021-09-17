@@ -2,30 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define OPTION (sizeof(int))
+//Auxiliares
 #define COUNTER (sizeof(int))
+#define OPTION (sizeof(int))
+#define AUX_POINTERPOINTER (sizeof(void **))
 
+//Informações da Pessoa
+#define NAME (sizeof(char) * 10)
 #define AGE (sizeof(int))
 #define NUMBER (sizeof(int))
-#define NAME (sizeof(char) * 10)
 
-void *addPerson(void *pBuffer, void *linkedList, void *first, void *prox, void *anterior);
-// void list(void *pBuffer, void *linkedList);
-// void *removed(void *pBuffer, void *linkedList);
-// void search(void *pBuffer, void *linkedList);
+//Finais da fila
+#define FIRST_PERSON (sizeof(int))
+#define LAST_PERSON (sizeof(int) + sizeof(void **))
+
+//Antes e depois do nome
+#define NEXT_PERSON (sizeof(char) * 10 + sizeof(int) + sizeof(int) + sizeof(void **))
+#define PREVIOUS_PERSON (sizeof(char) * 10 + sizeof(int) + sizeof(int))
+
+void *addPerson(void *pBuffer, void *pAux);
+void list(void *pBuffer, void *pAux);
+void *removed(void *pBuffer, void *linkedList, void *pRun);
+void search(void *pBuffer, void *pAux, void *pRun);
+void exitProgram(void *pBuffer, void *pAux);
 
 int main(){
+    void *pAux = NULL;
+    pAux = malloc(COUNTER + AUX_POINTERPOINTER + AUX_POINTERPOINTER);
+
     void *pBuffer = NULL;
-    void *linkedList = NULL;
+    pBuffer = malloc(OPTION + AUX_POINTERPOINTER);
 
-    void *first = NULL;
-    void *prox = NULL;
-    void *anterior = NULL;
+    void *pRun = NULL;
 
-    pBuffer = malloc(OPTION + COUNTER);
-    linkedList = malloc(NAME + AGE + NUMBER);
-
-    if (!pBuffer){
+    if (!pBuffer | !pAux){
         printf("Erro ao alocar memoria.\n");
         exit(1);
     }
@@ -43,20 +53,24 @@ int main(){
         printf("\n");
         switch (*(int *)(pBuffer)){
         case 1:
-            pBuffer = addPerson(pBuffer, linkedList, first, prox, anterior);
+            system("clear || cls");
+            addPerson(pBuffer, pAux);
             break;
         case 2:
-            // pBuffer = removed(pBuffer, linkedList);
+            system("clear || cls");
+            removed(pBuffer, pAux, pRun);
             break;
         case 3:
-            // list(pBuffer, linkedList);
+            system("clear || cls");
+            list(pBuffer, pAux);
             break;
         case 4:
-            // search(pBuffer, linkedList);
+            system("clear || cls");
+            search(pBuffer, pAux, pRun);
             break;
         case 5:
-            free(pBuffer);
-            exit(0);
+            system("clear || cls");
+            exitProgram(pBuffer, pAux);
             break;
         default:
             printf("\nOpcao invalida, tente novamente!\n");
@@ -65,109 +79,185 @@ int main(){
     } while ((*(int *)(pBuffer) >= 1) || (*(int *)(pBuffer) <= 5));
 }
 
-void *addPerson(void *pBuffer, void *linkedList, void *first, void *prox, void *anterior){
-    int *counter = (int *)(pBuffer + OPTION);
+void *addPerson(void *pBuffer, void *pAux){
+    int *counter = (int *)(pAux);
 
-    prox = malloc(NAME + AGE + NUMBER);
+    void *pPersonInfo = NULL;
+    pPersonInfo = malloc(NAME + AGE + NUMBER + AUX_POINTERPOINTER + AUX_POINTERPOINTER);
 
-    if (!prox){
-        printf("Memoria insuficiente");
-        exit (1);
+    void *pPersonInfoAux = NULL;
+
+    if (!pPersonInfo){
+        printf("Erro ao alocar memoria.\n");
+        exit(1);
     }
- 
-    printf("Digite o nome:\n ");
-    scanf("%s", (char *)(prox));
-    //getchar();
+
+    printf("\nOpção [1] - Adicionar nome\n");
+
+    printf("\nDigite o nome:\n ");
+    scanf("%s", (char *)pPersonInfo);
+    getchar();
 
     printf("\nDigite a idade:\n ");
-    scanf("%d", (int *)(prox + AGE));
-    //getchar();
+    scanf("%d", &*(int *)(pPersonInfo + NAME));
+    getchar();
    
     printf("\nDigite o telefone:\n ");
-    scanf("%d", (int *)(prox + AGE + NUMBER));
-    //getchar();
+    scanf("%d", &*(int *)(pPersonInfo + NAME + AGE));
+    getchar();
+
+    *(void **)(pPersonInfo + NEXT_PERSON) = NULL;   
+    *(void **)(pPersonInfo + PREVIOUS_PERSON) = NULL;
+
+    if (*counter == 0){
+        *(void **)(pAux + LAST_PERSON) = pPersonInfo;
+        *(void **)(pAux + FIRST_PERSON) = pPersonInfo;
+
+        *counter += 1;
+
+        return;
+    }
+
+    pBuffer = *(void **)(pAux + FIRST_PERSON);
+
+    while(pBuffer != NULL){
+        if(strcmp((char *)pPersonInfo, (char *)pBuffer) < 0){
+            *(void **)(pPersonInfo + PREVIOUS_PERSON) = *(void **)(pBuffer + PREVIOUS_PERSON);
+            *(void **)(pPersonInfo + NEXT_PERSON) = pBuffer;
+
+            if(*counter > 1 && *(void **)(pBuffer + PREVIOUS_PERSON) != NULL){
+                pPersonInfoAux = *(void **)(pBuffer + PREVIOUS_PERSON);
+                *(void **)(pPersonInfoAux + NEXT_PERSON) = pPersonInfo;
+            }
+
+            *(void **)(pBuffer + PREVIOUS_PERSON) = pPersonInfo;
+
+            if(*(void **)(pPersonInfo + PREVIOUS_PERSON) == NULL){
+                *(void **)(pAux + FIRST_PERSON) = pPersonInfo;
+            }
+
+            if(*counter == 1 && *(void **)(pBuffer + NEXT_PERSON) == NULL){
+                *(void **)(pAux + LAST_PERSON) = pBuffer;
+            }
+
+            *counter += 1; 
+
+            return;
+        }
+
+        if(*(void **)(pBuffer + NEXT_PERSON) == NULL){
+            pPersonInfoAux = pBuffer;
+        }
+
+        pBuffer = *(void **)(pBuffer + NEXT_PERSON);
+    }
+
+    *(void **)(pPersonInfo + PREVIOUS_PERSON) = pPersonInfoAux;
+    *(void **)(pPersonInfoAux + NEXT_PERSON) = pPersonInfo;
+    *(void **)(pAux + LAST_PERSON) = pPersonInfo;
 
     *counter += 1;
 
-    if (*counter == 0){
-        first = prox;
-        prox = NULL;
-    } else {
-        //NÃO VAI SER A PRIMEIRA
-    }
-
-    printf("%s %d %d", (char *)(first), *(int *)(first + AGE), *(int *)(first + AGE + NUMBER));
-
-    return linkedList, pBuffer;
+    return;
 }
 
-// void list(void *pBuffer, void *linkedList){
-//         int totalPeople;
-//         int i;
-     
-//         totalPeople = *(int *)pBuffer;
-        
-//         if(totalPeople == 0){
-//             printf("Agenda esta vazia, insira algo!\n\n");
-//         } else {
-//             for(i = 0 ; i < totalPeople ; i++){
-//                 printf("Nname [%d]\n", i + 1);
-//                 printf("Nome: %s\n", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i);
-//                 printf("Idade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * i));
-//                 printf("Numero: %d\n\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * i));
-//             }
-//         }
-// }
+void *removed(void *pBuffer, void *pAux, void *pRun){
+    int *counter = (int *)(pAux);
 
-// void search(void *pBuffer, void *linkedList){
-//     int totalPeople;
-//     int i;
-//     char aux_nome[10];
+    if (*counter == 0){
+        printf("\nOpção [2] - Remover nome\n");
+        printf("\nAgenda esta vazia, insira algo!\n\n");
+    } else {
+        printf("\nOpção [2] - Remover nome\n");
+        printf("\nO primeiro nome da lista foi removido!\n\n");
+        pRun = *(void **)(pAux + FIRST_PERSON);
+        *(void **)(pAux + FIRST_PERSON) = *(void **)(pRun + NEXT_PERSON);
+        free(pRun);
+        *(void **)(pAux + PREVIOUS_PERSON) = NULL;
+
+        *counter -= 1;
+
+        return pAux;
+    }
+}
+
+void list(void *pBuffer, void *pAux){
+    void *pPersonInfo = NULL;
+    pPersonInfo = *(void **)(pAux + FIRST_PERSON);
+
+    int *counter = (int *)(pAux); // Contador
+
+    if(*counter == 0){
+        printf("\nOpção [3] - Listar nomes\n");
+        printf("\nAgenda esta vazia, insira algo!\n\n");
+    } else {
+        printf("\nOpção [3] - Listar nomes\n\n");
+        while(pPersonInfo != NULL){
+            printf("Nome: %s\n", (char *)pPersonInfo);
+            printf("Idade: %d\n", *(int *)(pPersonInfo + NAME));
+            printf("Numero: %d\n\n", *(int *)(pPersonInfo + NAME + AGE));
+
+            pPersonInfo = *(void **)(pPersonInfo + NEXT_PERSON);
+        }
+    }
+}
+
+void search(void *pBuffer, void *pAux, void *pRun){
+    int *counter = (int *)(pAux);
+
+    void *auxSearch = malloc(sizeof(char) * 10);
+
+    pRun = *(void **)(pAux + FIRST_PERSON);
+
+    if(*counter == 0){
+        printf("\nOpção [4] - Buscar nome\n");
+        printf("\nNão existem pessoas na lista!\n\n");
+
+        free(auxSearch);
+
+        return;
+    } else {
+        printf("\nOpção [4] - Buscar nome\n\n");
+
+        printf("Digite o nome que queira buscar: \n");
+        scanf("%s", (char *)auxSearch);
+        getchar();
+
+        while(pRun != NULL){
+            if(strcmp(pRun ,(char *)auxSearch) == 0){
+                printf("Nome: %s\n", (char *)pRun);
+                printf("Idade: %d\n", *(int *)(pRun + NAME));
+                printf("Numero: %d\n\n", *(int *)(pRun + NAME + AGE));
+
+                free(auxSearch);
+                
+                return;
+            }
+            pRun = *(void **)(pRun + NEXT_PERSON);
+        }
+    }
+
+    free(auxSearch);
+
+    printf("\nNome não encontrado!!\n\n");
+
+    return;
+}
+
+void exitProgram(void *pBuffer, void *pAux){
+    void *pFree = *(void **)(pAux + FIRST_PERSON);
+
+    int *counter = (int *)(pAux);
+
+    while (*(void **)(pAux + FIRST_PERSON) != NULL) {
+        pFree = *(void **)(pAux + FIRST_PERSON);
+        *(void **)(pAux + FIRST_PERSON) = *(void **)(pFree + NEXT_PERSON);
+        free(pFree);
+
+        *counter -= 1;
+    }
     
-//     printf("Digite o nome que queira buscar: \n");
-//     scanf("%s", aux_nome);
-//     getchar();
-
-//     totalPeople = *(int *)pBuffer;
-
-//     for(i = 0; i < totalPeople; i++){
-//         if(strcmp((char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i ,aux_nome) == 0){
-//             printf("\nName: %s\n", (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * i);
-//             printf("\nIdade: %d\n", *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * i));
-//             printf("\nNumero: %d\n", *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * i));
-//             return;
-//         }
-//     }
-//     printf("Nome não encontrado!!\n");
-//     return;
-// }
-
-// void *removed(void *pBuffer, void *linkedList){
-//     int totalPeople, j, i;
-//     char aux_nome[10];
-
-//     totalPeople = *(int *)pBuffer;
-
-//     if (totalPeople == 0){
-//         printf("Agenda esta vazia, insira algo!\n\n");
-//     } else {
-//         printf("Digite o nome que queira remover: ");
-//         scanf("%s", aux_nome);
-//         getchar();
-
-//         for(i = 0; i < totalPeople; i++){
-//             if(strcmp((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * i), aux_nome) == 0) {
-//                 for(j = i; j < totalPeople; j++){
-//                     strcpy((char *)pBuffer + NNAME + ((NAME + AGE + NUMBER) * j), (char *)pBuffer + NNAME + (NAME + AGE + NUMBER) * (j + 1));
-//                     *(int *)(pBuffer + NNAME + NAME + ((NAME + AGE + NUMBER) * j)) = *(int *)(pBuffer + NNAME + NAME + (NAME + AGE + NUMBER) * (j + 1));
-//                     *(int *)(pBuffer + NNAME + NAME + AGE + ((NAME + AGE + NUMBER * j))) = *(int *)(pBuffer + NNAME + NAME + AGE + (NAME + AGE + NUMBER) * (j + 1));
-//                 }
-//                 *(int *)pBuffer = totalPeople - 1;
-//                 pBuffer = realloc(pBuffer, NNAME + (NAME + AGE + NUMBER) * (totalPeople - 1));
-//                 return pBuffer;
-//             }
-//         }
-//         printf("Nome não encontrado!\n\n");
-//     }
-//     return pBuffer;
-// }
+    free(pBuffer);
+    free(pAux);
+    exit(0);
+}
