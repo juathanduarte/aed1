@@ -239,22 +239,16 @@ void search(void *pBuffer, void *pAux, void *pRun){
 
     free(auxSearch);
 
-    printf("\nNome não encontrado!!\n\n");
-
     return;
 }
 
 void exitProgram(void *pBuffer, void *pAux){
     void *pFree = *(void **)(pAux + FIRST_PERSON);
 
-    int *counter = (int *)(pAux);
-
     while (*(void **)(pAux + FIRST_PERSON) != NULL) {
         pFree = *(void **)(pAux + FIRST_PERSON);
         *(void **)(pAux + FIRST_PERSON) = *(void **)(pFree + NEXT_PERSON);
         free(pFree);
-
-        *counter -= 1;
     }
     
     free(pBuffer);
