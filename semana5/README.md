@@ -12,6 +12,8 @@ Somente essa base de dados pode ficar fora do buffer principal, ou seja, pode us
 Seguir as orientações elaborados pelo monitor para código!
 Entregar um vídeo explicando o código e mostrando alguns testes e ao final o resultado do DrMemory.
 
+- Link do vídeo: https://drive.google.com/file/d/1G1PmvWKB2jobW2AMfnrQz-DPQcoLyB3G/view?usp=sharing
+
 # EXECUTANDO OS PROGRAMAS (compilação manual)
 
 Para executar os arquivos, você precisa dos arquivos em seu PC.
