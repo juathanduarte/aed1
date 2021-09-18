@@ -252,7 +252,4 @@ void exitProgram(void *pAux, void *pRun){
             free(pRun);
             *(void **)(pAux + FIRST_PERSON) = *(void **)(pAux + NEXT_PERSON);
         }
-    //free(pRun);
-
-    return;
 }
