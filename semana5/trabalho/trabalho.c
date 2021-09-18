@@ -24,11 +24,13 @@ void addPerson(void *pBuffer, void *pAux);
 void list(void *pBuffer, void *pAux);
 void removed(void *pBuffer, void *linkedList, void *pRun);
 void search(void *pBuffer, void *pAux, void *pRun);
-void exitProgram(void *pAux, void *pRun);
+void exitProgram(void *pAux);
 
 int main(){
     void *pAux = NULL;
     pAux = malloc(COUNTER + AUX_POINTERPOINTER + AUX_POINTERPOINTER);
+
+    *(int *)(pAux) = 0;
 
     void *pBuffer = NULL;
     pBuffer = malloc(OPTION + AUX_POINTERPOINTER);
@@ -70,9 +72,9 @@ int main(){
             break;
         case 5:
             system("clear || cls");
-            exitProgram(pAux, pRun);
-            free(pAux);
+            exitProgram(pAux);
             free(pBuffer);
+            free(pAux);
             exit(0);
             break;
         default:
@@ -176,11 +178,9 @@ void removed(void *pBuffer, void *pAux, void *pRun){
         pRun = *(void **)(pAux + FIRST_PERSON);
         *(void **)(pAux + FIRST_PERSON) = *(void **)(pRun + NEXT_PERSON);
         free(pRun);
-        *(void **)(pAux + PREVIOUS_PERSON) = NULL;
+        *(void **)(pBuffer + PREVIOUS_PERSON) = NULL;
 
         *counter -= 1;
-
-        return;
     }
 }
 
@@ -245,11 +245,19 @@ void search(void *pBuffer, void *pAux, void *pRun){
     return;
 }
 
-void exitProgram(void *pAux, void *pRun){
-    pRun = *(void **)(pAux + FIRST_PERSON);
-        while (pRun != NULL) {
-            *(void **)(pAux + FIRST_PERSON) = *(void **)(pAux + FIRST_PERSON);
-            free(pRun);
-            *(void **)(pAux + FIRST_PERSON) = *(void **)(pAux + NEXT_PERSON);
+void exitProgram(void *pAux){
+    void *pFree = *(void **)(pAux + FIRST_PERSON);
+    int *counter = (int *)(pAux);
+
+    if ((int *)(pAux) == 0){
+        printf("Lista vazia, até!");
+    } else {
+        while (*(void **)(pAux + FIRST_PERSON) != NULL) {
+            pFree = *(void **)(pAux + FIRST_PERSON);
+            *(void **)(pAux + FIRST_PERSON) = *(void **)(pFree + NEXT_PERSON);
+            free(pFree);
+
+            *counter -= 1;
         }
+    }
 }
