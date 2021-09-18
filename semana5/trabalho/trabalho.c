@@ -20,11 +20,11 @@
 #define NEXT_PERSON (sizeof(char) * 10 + sizeof(int) + sizeof(int) + sizeof(void **))
 #define PREVIOUS_PERSON (sizeof(char) * 10 + sizeof(int) + sizeof(int))
 
-void *addPerson(void *pBuffer, void *pAux);
+void addPerson(void *pBuffer, void *pAux);
 void list(void *pBuffer, void *pAux);
-void *removed(void *pBuffer, void *linkedList, void *pRun);
+void removed(void *pBuffer, void *linkedList, void *pRun);
 void search(void *pBuffer, void *pAux, void *pRun);
-void exitProgram(void *pBuffer, void *pAux);
+void exitProgram(void *pAux, void *pRun);
 
 int main(){
     void *pAux = NULL;
@@ -70,7 +70,10 @@ int main(){
             break;
         case 5:
             system("clear || cls");
-            exitProgram(pBuffer, pAux);
+            exitProgram(pAux, pRun);
+            free(pAux);
+            free(pBuffer);
+            exit(0);
             break;
         default:
             printf("\nOpcao invalida, tente novamente!\n");
@@ -79,7 +82,7 @@ int main(){
     } while ((*(int *)(pBuffer) >= 1) || (*(int *)(pBuffer) <= 5));
 }
 
-void *addPerson(void *pBuffer, void *pAux){
+void addPerson(void *pBuffer, void *pAux){
     int *counter = (int *)(pAux);
 
     void *pPersonInfo = NULL;
@@ -112,7 +115,7 @@ void *addPerson(void *pBuffer, void *pAux){
     if (*counter == 0){
         *(void **)(pAux + LAST_PERSON) = pPersonInfo;
         *(void **)(pAux + FIRST_PERSON) = pPersonInfo;
-
+        
         *counter += 1;
 
         return;
@@ -161,7 +164,7 @@ void *addPerson(void *pBuffer, void *pAux){
     return;
 }
 
-void *removed(void *pBuffer, void *pAux, void *pRun){
+void removed(void *pBuffer, void *pAux, void *pRun){
     int *counter = (int *)(pAux);
 
     if (*counter == 0){
@@ -177,7 +180,7 @@ void *removed(void *pBuffer, void *pAux, void *pRun){
 
         *counter -= 1;
 
-        return pAux;
+        return;
     }
 }
 
@@ -242,16 +245,14 @@ void search(void *pBuffer, void *pAux, void *pRun){
     return;
 }
 
-void exitProgram(void *pBuffer, void *pAux){
-    void *pFree = *(void **)(pAux + FIRST_PERSON);
+void exitProgram(void *pAux, void *pRun){
+    pRun = *(void **)(pAux + FIRST_PERSON);
+        while (pRun != NULL) {
+            *(void **)(pAux + FIRST_PERSON) = *(void **)(pAux + FIRST_PERSON);
+            free(pRun);
+            *(void **)(pAux + FIRST_PERSON) = *(void **)(pAux + NEXT_PERSON);
+        }
+    //free(pRun);
 
-    while (*(void **)(pAux + FIRST_PERSON) != NULL) {
-        pFree = *(void **)(pAux + FIRST_PERSON);
-        *(void **)(pAux + FIRST_PERSON) = *(void **)(pFree + NEXT_PERSON);
-        free(pFree);
-    }
-    
-    free(pBuffer);
-    free(pAux);
-    exit(0);
+    return;
 }
