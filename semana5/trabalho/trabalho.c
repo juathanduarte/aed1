@@ -37,7 +37,7 @@ int main(){
 
     void *pRun = NULL;
 
-    if (!pBuffer | !pAux){
+    if (!pBuffer || !pAux){
         printf("Erro ao alocar memoria.\n");
         exit(1);
     }
