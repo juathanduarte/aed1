@@ -1,0 +1,7 @@
+É possível que uma inserção/remoção gere mais do que uma rotação dupla? Explique
+
+Não é possível fazer mais de uma rotação dupla, tanto na inserção quanto na remoção.
+A cada inserção/remoção verificamos e balanceamos, então não faz sentido mexer em mais nós do que o necessário, 
+sendo que começamos de baixo checando se as alturas estão certas, caso o primeiro sinal der erro, vai ter uma 
+rotação simples pra resolver, seja rotacionando o avô do nodo ou a própria raiz da árvore, também é possível ter
+uma rotação rotações dupla para acertar os valores.
