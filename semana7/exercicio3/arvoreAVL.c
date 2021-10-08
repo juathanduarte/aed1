@@ -2,101 +2,219 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef struct Nodo{
+typedef struct {
     int key;
-    struct Nodo *pRight, *pLeft;
+} Registry;
+
+typedef struct Nodo {
+    Registry reg;
+    struct Nodo *pLeft;
+    struct Nodo *pRight;
 }Nodo;
 
-void *addNodo(int number, Nodo *pRaiz);
-void insert(Nodo *pRaiz, Nodo *pNodo);
-void listThree(Nodo *pRaiz);
-void cleanThree(Nodo *pRaiz);
+//Funções de "Inserção"
+int insert (Nodo **ppSource, Registry reg);
+void listTree (Nodo *pSource);
+void cleanTree (Nodo *pSource);
 
-int main(){
-    Nodo *pRaiz = NULL;
-    int nNodos;
-    printf("Digite a quantidade de nodos: ");
+//balancing
+int balancing(Nodo **ppSource);
+int balancingLeft (Nodo **ppSource);
+int balancingRight (Nodo **ppSource);
+void RSE (Nodo **ppSource);
+void RSD (Nodo **ppSource);
+int FB (Nodo *pSource);
+int height (Nodo *pSource);
+int verificationAVL (Nodo *pSource);
+
+int main () {
+    int i, nNodos, random;
+    Nodo *pSource = NULL;
+    Registry reg;
+
+    printf("Digite o numero de nodos: ");
     scanf("%d", &nNodos);
-    pRaiz = addNodo(nNodos, pRaiz);
-    printf("\n");
-    listThree(pRaiz);
-    printf("\n");
-    cleanThree(pRaiz);
-
-}
-
-void *addNodo(int number, Nodo *pRaiz){ // Add Ok
-    int i;
-
+    getchar();
+    
     srand(time(0));
 
-    for(i = 0;i<number;i++){ 
-        Nodo *pNodo = (Nodo *)malloc(sizeof(Nodo));
-
-        if(!pNodo){
-            printf("Erro de alocação de memória!");
-            exit(0);
-            }
-
-        pNodo->key = (rand());
-        pNodo->pRight = NULL;
-        pNodo->pLeft = NULL;
-
-    if(i == 0){
-        pRaiz = pNodo;
-
-    }
-    else{
-        insert(pRaiz, pNodo);
-
+    for (i=0; i < nNodos; i++){
+        random = rand() % 100;
+        reg.key = random;
+        insert(&pSource, reg);
     }
 
-}
-    return pRaiz;
-}
+    printf("\n");
+    listTree(pSource);
+    printf("\n");
 
-void insert(Nodo *pRaiz, Nodo *pNodo){ //Inserir OK
-    Nodo *pInsert;
-    pInsert = pRaiz;
- 
-    while(pInsert != NULL){
-
-        if(pInsert->key >= pNodo->key){
-            if(pInsert->pLeft == NULL){
-                pInsert->pLeft = pNodo;
-
-                return ;
-            }
-                pInsert = pInsert->pLeft;
-        }
-
-        else if(pInsert->key < pNodo->key){
-            if(pInsert->pRight == NULL){
-                pInsert->pRight = pNodo;
-                return;
-            }
-            pInsert = pInsert->pRight;
-        }
+    if(verificationAVL(pSource)) {
+        printf("\nA arvore eh AVL!\n");
+    } else {
+        printf("\nA arvore nao eh AVL!\n");
     }
+
+    cleanTree(pSource);
+
+    return 0;
 }
 
-void listThree(Nodo *pRaiz) { //Listar ok
-    Nodo *pRun = pRaiz;
+void cleanTree (Nodo *pSource) {
+    if (pSource == NULL) {
+        return;
+    }
 
-    if(pRun != NULL) {
-       printf("%d(", pRun->key);
-        listThree(pRun->pLeft);
-        listThree(pRun->pRight);
+    cleanTree(pSource -> pLeft);
+    cleanTree(pSource -> pRight);
+
+    free(pSource);
+}
+
+void listTree (Nodo *pSource) {
+    if (pSource != NULL) {
+        printf("%d(", pSource -> reg.key);
+        listTree(pSource -> pLeft);
+        listTree(pSource -> pRight);
         printf(")");
     }
-
 }
 
-void cleanThree(Nodo *pRaiz){
-    if(pRaiz == NULL){
+int insert (Nodo **ppSource, Registry nReg) {
+    if (*ppSource == NULL) {
+        *ppSource = (Nodo*)malloc(sizeof(Nodo));
+        (*ppSource) -> reg = nReg;
+        (*ppSource) -> pLeft = NULL;
+        (*ppSource) -> pRight = NULL;
+
+        return 1;
+    } else if ( nReg.key < (*ppSource) -> reg.key ) {
+        if (insert( &(*ppSource) -> pLeft, nReg )){
+            if (balancing(ppSource)) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+    } else if (nReg.key > (*ppSource) -> reg.key) {
+        if (insert (&(*ppSource) -> pRight, nReg)) {
+            if (balancing(ppSource)) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+    } else {
         return 0;
     }
-    cleanThree(pRaiz->pLeft);
-    cleanThree(pRaiz->pRight);
-    free(pRaiz);
+    return 0;
+}
+
+//-----------------------FUNÇÕES DE balancing-----------------------//
+
+int FB(Nodo *pSource) {
+    if (pSource == NULL) {
+        return 0;
+    }
+
+    return height(pSource -> pLeft) - height(pSource -> pRight);
+}
+
+int height(Nodo *pSource) {
+    int iLeft, iRight;
+
+    if (pSource == NULL) {
+        return 0;
+    }
+
+    iLeft = height(pSource -> pLeft);
+    iRight = height(pSource -> pRight);
+
+    if (iLeft > iRight){
+        return iLeft + 1;
+    } else {
+        return iRight + 1;
+    }
+}
+
+int balancing(Nodo **ppSource) {
+    int fb = FB(*ppSource);
+
+    if (fb > 1) {
+        return balancingLeft(ppSource);
+    }
+    else if (fb < -1){
+        return balancingRight(ppSource);
+    } else {
+        return 0;
+    }
+}
+
+int balancingLeft(Nodo **ppSource) {
+    int FBL = FB( (*ppSource) -> pLeft );
+
+    if (FBL >= 0) {
+        RSD(ppSource);
+        return 1;
+    } else if (FBL < 0) { // Rotação dupla para a Direita
+        RSE ( &((*ppSource) -> pLeft) );
+        RSD (ppSource);
+        return 1;
+    }
+    return 0;
+}
+
+
+int balancingRight (Nodo **ppSource) {
+    int FBR = FB( (*ppSource) -> pRight );
+    
+    if (FBR <= 0) {
+        RSE (ppSource);
+        return 1;
+    } else if (FBR > 0) { // ROTAÇÃO DUPLA PARA ESQUERDA
+        RSD ( &((*ppSource) -> pRight) );
+        RSE (ppSource);
+        return 1;
+    }
+    return 0;
+}
+
+void RSE (Nodo** ppSource) { // ROTAÇÃO SIMPLES PARA DIREITA
+    Nodo *pAux;
+
+    pAux = (*ppSource) -> pRight;
+    (*ppSource)->pRight = pAux -> pLeft;
+    pAux -> pLeft = (*ppSource);
+    (*ppSource) = pAux;
+}
+
+void RSD (Nodo **ppSource) { //ROTAÇÃO SIMPLES ESQUERDA
+    Nodo *pAux;
+
+    pAux = (*ppSource) -> pLeft;
+    (*ppSource) -> pLeft = pAux -> pRight;
+    pAux -> pRight = (*ppSource);
+    (*ppSource) = pAux;
+}
+
+int verificationAVL (Nodo *pSource) { //VERIFICAÇÃO SE É AVL
+    int fb;
+    fb = FB (pSource);
+
+    if (pSource == NULL) {
+        return 1;
+    }
+
+    if (!verificationAVL(pSource -> pLeft)) {
+        return 0;
+    }
+
+    if (!verificationAVL(pSource -> pRight)) {
+        return 0;
+    }
+
+    if ((fb > 1) || (fb < -1)) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
