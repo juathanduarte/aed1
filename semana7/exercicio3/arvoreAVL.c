@@ -12,12 +12,10 @@ typedef struct Nodo {
     struct Nodo *pRight;
 }Nodo;
 
-//Funções de "Inserção"
 int insert (Nodo **ppSource, Registry reg);
 void listTree (Nodo *pSource);
 void cleanTree (Nodo *pSource);
 
-//balancing
 int balancing(Nodo **ppSource);
 int balancingLeft (Nodo **ppSource);
 int balancingRight (Nodo **ppSource);
@@ -109,9 +107,7 @@ int insert (Nodo **ppSource, Registry nReg) {
     return 0;
 }
 
-//-----------------------FUNÇÕES DE balancing-----------------------//
-
-int FB(Nodo *pSource) {
+int FB(Nodo *pSource) { 
     if (pSource == NULL) {
         return 0;
     }
@@ -136,7 +132,7 @@ int height(Nodo *pSource) {
     }
 }
 
-int balancing(Nodo **ppSource) {
+int balancing(Nodo **ppSource) { 
     int fb = FB(*ppSource);
 
     if (fb > 1) {
@@ -155,7 +151,7 @@ int balancingLeft(Nodo **ppSource) {
     if (FBL >= 0) {
         RSD(ppSource);
         return 1;
-    } else if (FBL < 0) { // Rotação dupla para a Direita
+    } else if (FBL < 0) { 
         RSE ( &((*ppSource) -> pLeft) );
         RSD (ppSource);
         return 1;
@@ -170,7 +166,7 @@ int balancingRight (Nodo **ppSource) {
     if (FBR <= 0) {
         RSE (ppSource);
         return 1;
-    } else if (FBR > 0) { // ROTAÇÃO DUPLA PARA ESQUERDA
+    } else if (FBR > 0) {
         RSD ( &((*ppSource) -> pRight) );
         RSE (ppSource);
         return 1;
@@ -178,7 +174,7 @@ int balancingRight (Nodo **ppSource) {
     return 0;
 }
 
-void RSE (Nodo** ppSource) { // ROTAÇÃO SIMPLES PARA DIREITA
+void RSE (Nodo** ppSource) {
     Nodo *pAux;
 
     pAux = (*ppSource) -> pRight;
@@ -187,7 +183,7 @@ void RSE (Nodo** ppSource) { // ROTAÇÃO SIMPLES PARA DIREITA
     (*ppSource) = pAux;
 }
 
-void RSD (Nodo **ppSource) { //ROTAÇÃO SIMPLES ESQUERDA
+void RSD (Nodo **ppSource) {
     Nodo *pAux;
 
     pAux = (*ppSource) -> pLeft;
@@ -196,7 +192,7 @@ void RSD (Nodo **ppSource) { //ROTAÇÃO SIMPLES ESQUERDA
     (*ppSource) = pAux;
 }
 
-int verificationAVL (Nodo *pSource) { //VERIFICAÇÃO SE É AVL
+int verificationAVL (Nodo *pSource) {
     int fb;
     fb = FB (pSource);
 
