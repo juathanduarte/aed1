@@ -1,7 +1,9 @@
 # EXERCICIO 1
 Monte figuras da sequência de passos da montagem de uma árvore avl
-  - Essa sequencia deve ter as 4 rotações
-  - https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+  * Essa sequencia deve ter as 4 rotações
+  * https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+
+  - Link Vídeo: https://drive.google.com/file/d/1iN-zPe_6ePWzqb6fM_uXaL835DiDHhQD/view?usp=sharing
 
 # EXERCICIO 2
 É possível que uma inserção/remoção gere mais do que uma rotação dupla? Explique
