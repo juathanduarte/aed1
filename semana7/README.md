@@ -21,6 +21,8 @@ Implemente uma árvore avl. O programa só pergunta 1 número para o usuário it
   - Segundo cenário
       1. Após a execução do primeiro cenário deve testar a árvore com os casos mostrado no seguinte link: https://stackoverflow.com/questions/3955680/how-to-check-if-my-avltree-implementation-is-correct
 
+- Link Vídeo: https://drive.google.com/file/d/1FK3yeCT_Fk2oWxfcCpZoik6YjaOgF56Q/view?usp=sharing
+
 # EXECUTANDO OS PROGRAMAS (compilação manual)
 Para executar os arquivos, você precisa dos arquivos em seu PC.
 Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/juathanduarte/aed1.git).
