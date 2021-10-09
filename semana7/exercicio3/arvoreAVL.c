@@ -311,7 +311,6 @@ int balancingLeft(Nodo **ppSource) {
     return 0;
 }
 
-
 int balancingRight (Nodo **ppSource) {
     int FBR = FB( (*ppSource) -> pRight );
     
