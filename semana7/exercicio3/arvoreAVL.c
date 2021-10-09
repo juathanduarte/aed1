@@ -289,8 +289,7 @@ int balancing(Nodo **ppSource) {
 
     if (fb > 1) {
         return balancingLeft(ppSource);
-    }
-    else if (fb < -1){
+    } else if (fb < -1){
         return balancingRight(ppSource);
     } else {
         return 0;
