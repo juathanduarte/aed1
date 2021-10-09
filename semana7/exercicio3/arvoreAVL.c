@@ -10,7 +10,7 @@ typedef struct Nodo {
     Registry reg;
     struct Nodo *pLeft;
     struct Nodo *pRight;
-}Nodo;
+} Nodo;
 
 int insert (Nodo **ppSource, Registry reg);
 void listTree (Nodo *pSource);
