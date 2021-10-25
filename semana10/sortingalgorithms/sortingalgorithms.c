@@ -3,13 +3,14 @@
 #include <sys/time.h>
 
 void orderVetor(int *pVetor, int sizeVetor);
+int *copyVetor(int *pVetor, int sizeVetor);
+void printVetor(int *pVetor, int sizeVetor);
 void insertionSort(int *pVetor, int sizeVetor);
 
 int main (){
-  int sizeVetor = 0, random, option, i;
-
+  int sizeVetor = 0, option, i;
   int *pVetor = NULL;
-
+  int *pVetorAux = NULL;
   struct timeval begin, end;
 
   printf ("Digite o tamanho do vetor: ");
@@ -21,9 +22,7 @@ int main (){
   srand(time(NULL));
 
   for (i = 0; i < sizeVetor; i++){
-    random = rand() % 100000000;
-    pVetor[i] = random;
-    printf("%d ", pVetor[i]);
+    pVetor[i] = rand() % 100000000;
   }
 
   do {
@@ -41,28 +40,24 @@ int main (){
       case 1:
         system("clear || cls");
         printf("\n\n-- INSERTION SHORT --\n\n");
-
+        pVetorAux = copyVetor(pVetor, sizeVetor);
         printf("- Vetor antes do Insertion Short: ");
-        for (i = 0; i < sizeVetor; i++){
-          printf("%d ", pVetor[i]);
-        }
-        orderVetor(pVetor, sizeVetor);
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
 
         gettimeofday(&begin, 0);
-        insertionSort(pVetor, sizeVetor);
+        insertionSort(pVetorAux, sizeVetor);
         gettimeofday(&end, 0);
         long seconds = end.tv_sec - begin.tv_sec;
         long microseconds = end.tv_usec - begin.tv_usec;
         double elapsed = seconds + microseconds*1e-6;
 
         printf("\n- Vetor depois do Insertion Short: ");
-        for (i = 0; i < sizeVetor; i++){
-          printf("%d ", pVetor[i]);
-        }
-        orderVetor(pVetor, sizeVetor);
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
 
         printf("\nTempo para ordenar com o Insertion Short: %.3f segundos.\n", elapsed);
-
+        free(pVetorAux);
         break;
       case 2:
         system("clear || cls");
@@ -113,4 +108,21 @@ void orderVetor(int *pVetor, int sizeVetor){
     }
   }
   printf("\nEsta ordenado!");
+}
+
+int *copyVetor(int *pVetor, int sizeVetor){
+  int counter, *pVetorAux = NULL;
+  pVetorAux = malloc(sizeof(int) * sizeVetor);
+
+  for(counter = 0; counter < sizeVetor; counter++) {
+      pVetorAux[counter] = pVetor[counter];
+  }
+
+  return pVetorAux;
+}
+
+void printVetor(int *pVetor, int sizeVetor){
+  for (int counter = 0; counter < sizeVetor; counter++){
+    printf("%d ", pVetor[counter]);
+  }
 }
