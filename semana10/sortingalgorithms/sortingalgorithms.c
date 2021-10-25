@@ -6,6 +6,7 @@ void orderVetor(int *pVetor, int sizeVetor);
 int *copyVetor(int *pVetor, int sizeVetor);
 void printVetor(int *pVetor, int sizeVetor);
 void insertionSort(int *pVetor, int sizeVetor);
+void selectionSort(int *pVetor, int sizeVetor);
 
 int main (){
   int sizeVetor = 0, option, i;
@@ -79,8 +80,8 @@ int main (){
           system("clear || cls");
           printf("\nOpcao invalida, digite novamente!\n");
           break;
-        }
-    } while ((option >= 1) || (option <= 5));
+    }
+  } while ((option >= 1) || (option <= 5));
 
 }
 
@@ -97,6 +98,23 @@ void insertionSort(int *pVetor, int sizeVetor){
     pVetor[auxCounter + 1] = auxNumber;
   }
 }
+
+// void selectionSort(int *pVetor, int sizeVetor){
+//   int min, tmp, i, j, min_id;
+//   for (i = 0; i < (sizeVetor - 1); i++){
+//     min = pVetor[i];
+//     for(j = (i + 1); j < sizeVetor; j++){
+//       if(pVetor[j] < min){
+//         min = pVetor[j];
+//         min_id = j;
+//       }
+//     tmp = pVetor[i];
+//     pVetor[i] = pVetor[min_id];
+//     pVetor[min_id] = tmp;
+//     min_id = i + 1;
+//     }
+//   }
+// }
 
 void orderVetor(int *pVetor, int sizeVetor){
   int counter;
