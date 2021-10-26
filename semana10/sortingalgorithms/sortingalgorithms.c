@@ -49,20 +49,32 @@ int main (){
         gettimeofday(&begin, 0);
         insertionSort(pVetorAux, sizeVetor);
         gettimeofday(&end, 0);
-        long seconds = end.tv_sec - begin.tv_sec;
-        long microseconds = end.tv_usec - begin.tv_usec;
-        double elapsed = seconds + microseconds*1e-6;
 
         printf("\n- Vetor depois do Insertion Short: ");
         printVetor(pVetorAux, sizeVetor);
         orderVetor(pVetorAux, sizeVetor);
 
-        printf("\nTempo para ordenar com o Insertion Short: %.3f segundos.\n", elapsed);
+        printf("\nTempo para ordenar com o Insertion Short: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
         free(pVetorAux);
         break;
       case 2:
         system("clear || cls");
-        // SELECTION SORT
+        printf("\n\n-- SELECTION SORT --\n\n");
+        pVetorAux = copyVetor(pVetor, sizeVetor);
+        printf("- Vetor antes do Selection Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        gettimeofday(&begin, 0);
+        selectionSort(pVetorAux, sizeVetor);
+        gettimeofday(&end, 0);
+
+        printf("\n- Vetor depois do Selection Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        printf("\nTempo para ordenar com o Selection Sort: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
+        free(pVetorAux);
         break;
       case 3:
         system("clear || cls");
@@ -99,22 +111,23 @@ void insertionSort(int *pVetor, int sizeVetor){
   }
 }
 
-// void selectionSort(int *pVetor, int sizeVetor){
-//   int min, tmp, i, j, min_id;
-//   for (i = 0; i < (sizeVetor - 1); i++){
-//     min = pVetor[i];
-//     for(j = (i + 1); j < sizeVetor; j++){
-//       if(pVetor[j] < min){
-//         min = pVetor[j];
-//         min_id = j;
-//       }
-//     tmp = pVetor[i];
-//     pVetor[i] = pVetor[min_id];
-//     pVetor[min_id] = tmp;
-//     min_id = i + 1;
-//     }
-//   }
-// }
+void selectionSort(int *pVetor, int sizeVetor){
+  int lowerValue, aux, counter, secondCounter, lowerValue_id;
+
+  for (counter = 0; counter < (sizeVetor - 1); counter++){
+    lowerValue = pVetor[counter];
+    for(secondCounter = (counter + 1); secondCounter < sizeVetor; secondCounter++){
+      if(pVetor[secondCounter] < lowerValue){
+        lowerValue = pVetor[secondCounter];
+        lowerValue_id = secondCounter;
+      }
+    }
+    aux = pVetor[counter];
+    pVetor[counter] = pVetor[lowerValue_id];
+    pVetor[lowerValue_id] = aux;
+    lowerValue_id = counter + 1;
+  }
+}
 
 void orderVetor(int *pVetor, int sizeVetor){
   int counter;
