@@ -32,7 +32,7 @@ int main (){
     printf("\t2) Selection Sort\n");
     printf("\t3) Quick Sort\n");
     printf("\t4) Merge Sort\n");
-    printf("\t4) Sair\n");
+    printf("\t5) Sair\n");
     printf("\t- Opcao: ");
     scanf("%d", &option);
     getchar();
@@ -86,7 +86,8 @@ int main (){
         break;
       case 5:
         system("clear || cls");
-        // SAIR
+        free(pVetor);
+        exit(1);
         break;
       default:
           system("clear || cls");
