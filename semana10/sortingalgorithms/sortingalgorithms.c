@@ -7,6 +7,7 @@ int *copyVetor(int *pVetor, int sizeVetor);
 void printVetor(int *pVetor, int sizeVetor);
 void insertionSort(int *pVetor, int sizeVetor);
 void selectionSort(int *pVetor, int sizeVetor);
+void quickSort(int *pVetor, int left, int right);
 
 int main (){
   int sizeVetor = 0, option, i;
@@ -78,7 +79,22 @@ int main (){
         break;
       case 3:
         system("clear || cls");
-        // QUICK SORT
+        printf("\n\n-- QUICK SORT --\n\n");
+        pVetorAux = copyVetor(pVetor, sizeVetor);
+        printf("- Vetor antes do Quick Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        gettimeofday(&begin, 0);
+        quickSort(pVetorAux, 0, sizeVetor - 1);
+        gettimeofday(&end, 0);
+
+        printf("\n- Vetor depois do Quick Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        printf("\nTempo para ordenar com o Selection Sort: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
+        free(pVetorAux);
         break;
       case 4:
         system("clear || cls");
@@ -127,6 +143,36 @@ void selectionSort(int *pVetor, int sizeVetor){
     pVetor[counter] = pVetor[lowerValue_id];
     pVetor[lowerValue_id] = aux;
     lowerValue_id = counter + 1;
+  }
+}
+
+void quickSort(int *pVetor, int left, int right){
+  int mid, aux, auxLeft, auxRight;
+
+  auxLeft = left;
+  auxRight = right;
+  mid = pVetor[(left + right) / 2]; //pegar valor aleatório e não exatamente o meio
+
+  do {
+    while(pVetor[auxLeft] < mid){
+      auxLeft++;
+    }
+    while(pVetor[auxRight] > mid){
+      auxRight--;
+    }
+    if (auxLeft <= auxRight){
+      aux = pVetor[auxLeft];
+      pVetor[auxLeft] = pVetor[auxRight];
+      pVetor[auxRight] = aux;
+      auxLeft++;
+      auxRight--;
+    }
+  } while (auxLeft <= auxRight);
+  if (left < auxRight){
+    quickSort(pVetor, left, auxRight);
+  }
+  if (auxLeft < right){
+    quickSort(pVetor, auxLeft, right);
   }
 }
 
