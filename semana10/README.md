@@ -9,6 +9,8 @@
 7- Faça teste de leaks de memória.
 8- Faça um vídeo explicando todos os pontos. Por favor, não faça o vídeo mais longo do que o necessário e não esqueça das regras de envio de material.
 
+- Link do vídeo:https://drive.google.com/file/d/1espfxCzMyV21Xm2AU-zrN6cLl31oeqBz/view?usp=sharing
+
 # EXECUTANDO OS PROGRAMAS (compilação manual)
 Para executar os arquivos, você precisa dos arquivos em seu PC.
 Faça download de cada arquivo .c separadamente ou clone o repositório (git clone https://github.com/juathanduarte/aed1.git).

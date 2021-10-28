@@ -230,8 +230,7 @@ void merge(int *pVetor, int left, int middle, int right){
 			} else {
 				if (!endOne){
 					aux[firstCount] = pVetor[auxLeft++];
-        }
-				else{
+        } else {
 					aux[firstCount] = pVetor[auxRight++];
         }
 			}
