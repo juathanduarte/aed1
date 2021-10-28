@@ -8,6 +8,8 @@ void printVetor(int *pVetor, int sizeVetor);
 void insertionSort(int *pVetor, int sizeVetor);
 void selectionSort(int *pVetor, int sizeVetor);
 void quickSort(int *pVetor, int left, int right);
+void mergeSort(int *pVetor, int left, int right);
+void merge(int *pVetor, int left, int middle, int right);
 
 int main (){
   int sizeVetor = 0, option, i;
@@ -15,7 +17,7 @@ int main (){
   int *pVetorAux = NULL;
   struct timeval begin, end;
 
-  printf ("Digite o tamanho do vetor: ");
+  printf ("Digite o size do vetor: ");
   scanf("%d", &sizeVetor);
   getchar();
 
@@ -93,12 +95,27 @@ int main (){
         printVetor(pVetorAux, sizeVetor);
         orderVetor(pVetorAux, sizeVetor);
 
-        printf("\nTempo para ordenar com o Selection Sort: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
+        printf("\nTempo para ordenar com o Quick Sort: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
         free(pVetorAux);
         break;
       case 4:
         system("clear || cls");
-        // MERGE SORT
+        printf("\n\n-- MERGE SORT --\n\n");
+        pVetorAux = copyVetor(pVetor, sizeVetor);
+        printf("- Vetor antes do Merge Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        gettimeofday(&begin, 0);
+        mergeSort(pVetorAux, 0, sizeVetor - 1);
+        gettimeofday(&end, 0);
+
+        printf("\n- Vetor depois do Merge Sort: ");
+        printVetor(pVetorAux, sizeVetor);
+        orderVetor(pVetorAux, sizeVetor);
+
+        printf("\nTempo para ordenar com o Merge Sort: %.3f segundos.\n", (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)* 1e-6));
+        free(pVetorAux);
         break;
       case 5:
         system("clear || cls");
@@ -151,7 +168,7 @@ void quickSort(int *pVetor, int left, int right){
 
   auxLeft = left;
   auxRight = right;
-  mid = pVetor[(left + right) / 2]; //pegar valor aleatório e não exatamente o meio
+  mid = pVetor[(left + right) / 2];
 
   do {
     while(pVetor[auxLeft] < mid){
@@ -174,6 +191,56 @@ void quickSort(int *pVetor, int left, int right){
   if (auxLeft < right){
     quickSort(pVetor, auxLeft, right);
   }
+}
+
+void mergeSort(int *pVetor, int left, int right){
+  int middle;
+
+  if (left < right){
+    middle = (left + right) / 2;
+    mergeSort(pVetor, left, middle);
+    mergeSort(pVetor, middle + 1, right);
+    merge(pVetor, left, middle, right);
+  }
+}
+
+void merge(int *pVetor, int left, int middle, int right){
+  int *aux, auxLeft, auxRight, size, firstCount, secondCount, thirdCount;
+	int endOne = 0, endTwo = 0;
+
+	size = right - left + 1;
+	auxLeft = left;
+	auxRight = middle + 1;
+	aux = (int *)malloc(size * sizeof(int));
+
+	if (aux != NULL){
+		for (firstCount = 0; firstCount < size; firstCount++){
+			if (!endOne && !endTwo){
+				if (pVetor[auxLeft] < pVetor[auxRight]){
+					aux[firstCount] = pVetor[auxLeft++];
+        } else {
+					aux[firstCount] = pVetor[auxRight++];
+        }
+				if (auxLeft > middle){
+					endOne = 1;
+        }
+				if (auxRight > right){
+					endTwo = 1;
+        }
+			} else {
+				if (!endOne){
+					aux[firstCount] = pVetor[auxLeft++];
+        }
+				else{
+					aux[firstCount] = pVetor[auxRight++];
+        }
+			}
+		}
+		for (secondCount = 0, thirdCount = left; secondCount < size; secondCount++, thirdCount++){
+			pVetor[thirdCount] = aux[secondCount];
+    }
+	}
+	free(aux);
 }
 
 void orderVetor(int *pVetor, int sizeVetor){
